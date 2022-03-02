@@ -120,8 +120,9 @@ def get_tmg_maxima(tmg):
     The function only returns maxima that occur after the parameter
     constants.REJECT_TMG_PEAK_INDEX_LESS_THAN. Reason: the filtering built in to
     the TMG acquisition system introduces occasional non-physical local maxima in 
-    the first few data points at the start of the signal. These are discarded
-    based on the value of constants.REJECT_TMG_PEAK_INDEX_LESS_THAN.
+    the first few data points at the start of the signal as an artifact from
+    filtering the raw measured signal with an IIR lowpass filter---I do not know
+    the exact filter specs, perhaps a 5-th order Butterworth at ~15 Hz cutoff?
 
     Parameters
     ----------
