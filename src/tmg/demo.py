@@ -1,7 +1,5 @@
 import pandas as pd
-import numpy as np
 import os
-
 import tmg, tmg_constants
 
 """
@@ -121,6 +119,6 @@ def xlsx_to_pandas_df(xlsx_file, max_signal_rows=tmg_constants.TMG_MAX_ROWS):
 
     
 if __name__ == "__main__":
-    # get_tmg_params_of_single_measurement()
+    get_tmg_params_of_single_measurement()
     get_tmg_params_of_file()
-    # get_tmg_params_of_directory()
+    get_tmg_params_of_directory()
