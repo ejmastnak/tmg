@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-import tmg, constants
+import tmg, tmg_constants
 
 """
 The script `tmg.py` offers the function `get_params_of_tmg_signal`, which 
@@ -40,13 +40,13 @@ def get_tmg_params_of_single_measurement(measurement_num=0, xlsx_file = "../samp
     params = tmg.get_params_of_tmg_signal(tmg_signal.to_numpy())
 
     # Print params in human-readable format
-    param_names = constants.TMG_PARAM_NAMES
+    param_names = tmg_constants.TMG_PARAM_NAMES
     for i, param in enumerate(params):
         print("{} {:.2f}".format(param_names[i], param))
 
 
-def get_tmg_params_of_file(xlsx_input_file = "../sample-data/EM.xlsx",
-        output_file = "../sample-output/EM-params.csv"):
+def get_tmg_params_of_file(xlsx_input_file = "../../sample-data/EM.xlsx",
+        output_file = "../../sample-output/EM-params.csv"):
     """
     Computes the TMG parameters of all measurements 
     in a standard TMG-formatted Excel file.
@@ -57,7 +57,7 @@ def get_tmg_params_of_file(xlsx_input_file = "../sample-data/EM.xlsx",
     df = xlsx_to_pandas_df(xlsx_input_file)
 
     measurement_names = []
-    param_names = constants.TMG_PARAM_NAMES
+    param_names = tmg_constants.TMG_PARAM_NAMES
 
     # First add parameters to a list, then create a DataFrame from the list
     param_list = []
@@ -74,8 +74,8 @@ def get_tmg_params_of_file(xlsx_input_file = "../sample-data/EM.xlsx",
     param_df.to_csv(output_file)
 
 
-def get_tmg_params_of_directory(input_dir="../sample-data/",
-        output_dir="../sample-output/"):
+def get_tmg_params_of_directory(input_dir="../../sample-data/",
+        output_dir="../../sample-output/"):
     """
     Computes the TMG parameters for all measurements in each 
     of the TMG-formatted Excel files in a directory.
@@ -92,7 +92,7 @@ def get_tmg_params_of_directory(input_dir="../sample-data/",
                     output_file=output_dir + output_filename)
 
 
-def xlsx_to_pandas_df(xlsx_file, max_signal_rows=constants.TMG_MAX_ROWS):
+def xlsx_to_pandas_df(xlsx_file, max_signal_rows=tmg_constants.TMG_MAX_ROWS):
     """
     Utility function for reading the measurements in a TMG-formatted Excel file
     into a Pandas dataframe.
@@ -116,11 +116,11 @@ def xlsx_to_pandas_df(xlsx_file, max_signal_rows=constants.TMG_MAX_ROWS):
     
     """
     return pd.read_excel(xlsx_file, engine='openpyxl', header=None,
-            skiprows=constants.TMG_DATA_START_ROW,
+            skiprows=tmg_constants.TMG_DATA_START_ROW,
             nrows=max_signal_rows).drop(columns=[0])
 
     
 if __name__ == "__main__":
     # get_tmg_params_of_single_measurement()
-    # get_tmg_params_of_file()
-    get_tmg_params_of_directory()
+    get_tmg_params_of_file()
+    # get_tmg_params_of_directory()

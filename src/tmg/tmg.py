@@ -5,7 +5,7 @@ from scipy.stats import ttest_rel
 from scipy.interpolate import lagrange
 from scipy.signal import find_peaks
 import os
-import constants
+import tmg_constants
 
 """
 A collection of functions used to analyze TMG time series signals.
@@ -16,7 +16,7 @@ Functionality includes:
       rdd_max, rdd_min, rdd_max_time, rdd_min_time, etc...
 """
 
-def get_params_of_tmg_signal(tmg, dt=constants.TMG_DT, 
+def get_params_of_tmg_signal(tmg, dt=tmg_constants.TMG_DT, 
         log_params=False, log_aux_params=False, show_plot=False):
     """
     Computes the TMG and RDD parameters of a single TMG time-series signal.
@@ -98,7 +98,7 @@ def get_params_of_tmg_signal(tmg, dt=constants.TMG_DT,
 
     # Compute derivative of TMG signal (rdd in TMG lingo)
     # --------------------------------------------- #
-    rdd = np.gradient(tmg, constants.TMG_DT)  # time derivative of the TMG signal
+    rdd = np.gradient(tmg, tmg_constants.TMG_DT)  # time derivative of the TMG signal
     rdd_max_time_estimate = np.argmax(rdd)
     rdd_max_time, rdd_max = interpolate_extrema(t, rdd, rdd_max_time_estimate, find_max=True)
     rdd_min_time_guess = np.argmin(rdd)
@@ -140,11 +140,11 @@ def get_tmg_maxima(tmg):
     max_indices = find_peaks(tmg)[0]
 
     # Keep only maxima after REJECT_TMG_PEAK_INDEX_LESS_THAN
-    return max_indices[(max_indices > constants.REJECT_TMG_PEAK_INDEX_LESS_THAN)]
+    return max_indices[(max_indices > tmg_constants.REJECT_TMG_PEAK_INDEX_LESS_THAN)]
 
 
 def interpolate_time_of_target_amplitude(t, tmg, target_amp, max_indices,
-        find_time_left_of_peak, window_size=constants.TIME_INTERP_WINDOW_SIZE):
+        find_time_left_of_peak, window_size=tmg_constants.TIME_INTERP_WINDOW_SIZE):
     """
     Estimates the time at which a TMG signal reaches the target amplitude in x_target
 
@@ -241,8 +241,8 @@ def interpolate_time_of_target_amplitude(t, tmg, target_amp, max_indices,
 
 
 def interpolate_extrema(t, x, extrema_index, find_max=True, 
-        poly_dt=constants.EXTREMA_INTERP_DT, 
-        window_size=constants.EXTREMA_INTERP_WINDOW_SIZE):
+        poly_dt=tmg_constants.EXTREMA_INTERP_DT, 
+        window_size=tmg_constants.EXTREMA_INTERP_WINDOW_SIZE):
     """
     Used to estimate the values and times of TMG and RDD signal extrema with
     finer granularity than the TMG signal's 1kHz sampling explicitly allows.
