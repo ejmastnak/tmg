@@ -4,7 +4,7 @@ from scipy.stats import ttest_rel
 from scipy.interpolate import lagrange
 from scipy.signal import find_peaks
 
-import constants
+from . import constants
 
 """
 A collection of functions used to analyze TMG time series signals.

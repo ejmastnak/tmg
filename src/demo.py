@@ -1,6 +1,7 @@
 import os
 import pandas as pd
-import params, constants
+from tmg_biomechanics import constants
+from tmg_biomechanics.tmg_params import get_params_of_tmg_signal
 
 """
 The module `params.py` offers the function `get_params_of_tmg_signal`, which 
@@ -16,7 +17,10 @@ easier to extract TMG signals from TMG-formatted Excel measurement files and
 to compute parameters from these signals.
 """
 
-def get_tmg_params_of_single_measurement(measurement_num=0, xlsx_file = "../sample-data/EM.xlsx"):
+DATA_DIR = "../sample-data/"
+OUTPUT_DIR = "../sample-output/"
+
+def get_tmg_params_of_single_measurement(measurement_num=0, xlsx_file=DATA_DIR + "EM.xlsx"):
     """
     Computes the TMG parameters of a single TMG measurement/signal/time-series
     in a standard TMG-formatted Excel file, which will generally contain 
@@ -35,7 +39,7 @@ def get_tmg_params_of_single_measurement(measurement_num=0, xlsx_file = "../samp
     tmg_signal = df.iloc[:, measurement_num]
 
     # Compute TMG parameters
-    params = params.get_params_of_tmg_signal(tmg_signal.to_numpy())
+    params = get_params_of_tmg_signal(tmg_signal.to_numpy())
 
     # Print params in human-readable format
     param_names = constants.TMG_PARAM_NAMES
@@ -43,8 +47,8 @@ def get_tmg_params_of_single_measurement(measurement_num=0, xlsx_file = "../samp
         print("{} {:.2f}".format(param_names[i], param))
 
 
-def get_tmg_params_of_file(xlsx_input_file = "../../sample-data/EM.xlsx",
-        output_file = "../../sample-output/EM-params.csv"):
+def get_tmg_params_of_file(xlsx_input_file=DATA_DIR + "EM.xlsx",
+        output_file=OUTPUT_DIR + "EM-params.csv"):
     """
     Computes the TMG parameters of all measurements 
     in a standard TMG-formatted Excel file.
@@ -62,7 +66,7 @@ def get_tmg_params_of_file(xlsx_input_file = "../../sample-data/EM.xlsx",
 
     # Loop through each measurement number and TMG signal in Excel file
     for (m, tmg_signal) in df.iteritems():
-        params = params.get_params_of_tmg_signal(tmg_signal.to_numpy())
+        params = get_params_of_tmg_signal(tmg_signal.to_numpy())
         param_list.append(params)
         measurement_names.append("Measurement {}".format(m))
 
@@ -72,8 +76,8 @@ def get_tmg_params_of_file(xlsx_input_file = "../../sample-data/EM.xlsx",
     param_df.to_csv(output_file)
 
 
-def get_tmg_params_of_directory(input_dir="../../sample-data/",
-        output_dir="../../sample-output/"):
+def get_tmg_params_of_directory(input_dir=DATA_DIR,
+        output_dir=OUTPUT_DIR):
     """
     Computes the TMG parameters for all measurements in each 
     of the TMG-formatted Excel files in a directory.
